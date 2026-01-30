@@ -29,10 +29,13 @@ public class EnemyLiveComponent : ILive
 
     public event Action<Character> OnDeath;
 
+    public event Action<Character> OnCharacterHealthChange;
+
     public void GetDamage(float damage)
     {
         Health -= damage;
         Debug.Log($"Enemy get damage = {damage}. Health = {Health}");
+        OnCharacterHealthChange?.Invoke(selfCharacter);
     }
 
     public void Initialize(CharacterData characterData, Character selfCharacter)

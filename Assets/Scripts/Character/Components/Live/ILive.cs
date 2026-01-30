@@ -5,6 +5,8 @@ public interface ILive : ICharacter
 {
    public event Action<Character> OnDeath;
 
+   public event Action<Character> OnCharacterHealthChange;
+
    public bool IsAlive { get; }    
    
    public float MaxHealth { get; }

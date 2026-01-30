@@ -23,11 +23,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UIManager uiManager;
 
+    [SerializeField]
+    private WindowsService windowsService;
+
     private ScoreSystem scoreSystem;
 
     private float gameSessionTime;
 
     private GameState gameState;
+
+    public WindowsService WindowsService => windowsService;
 
     public GameState GameState => gameState;
 
@@ -128,6 +133,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Victory");
         scoreSystem.EndGame();
+
+        //WindowsService.ShowWindow
     }
 
     private void GameOver()
