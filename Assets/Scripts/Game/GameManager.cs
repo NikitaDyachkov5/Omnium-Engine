@@ -21,10 +21,10 @@ public class GameManager : MonoBehaviour
     private WavesSystem wavesSystem;
 
     [SerializeField]
-    private UIManager uiManager;
+    private WindowsService windowsService;
 
     [SerializeField]
-    private WindowsService windowsService;
+    private float timePreStart = 3;
 
     private ScoreSystem scoreSystem;
 
@@ -32,15 +32,21 @@ public class GameManager : MonoBehaviour
 
     private GameState gameState;
 
+    public float GameTimeSeconds => gameSessionTime;
+
     public WindowsService WindowsService => windowsService;
 
     public GameState GameState => gameState;
 
+    public ScoreSystem ScoreSystem => scoreSystem;
+
     public static GameManager Instance { get; private set; }
+
 
     public CharacterFactory CharacterFactory => characterFactory;
 
-    private float timePreStart = 3;
+
+
 
     private void Awake()
     {
@@ -61,7 +67,9 @@ public class GameManager : MonoBehaviour
         gameState = new GameState();
 
         characterSpawn.Initialize(characterFactory, scoreSystem, gameData, GameOver);
-        wavesSystem.Initialize(gameData, characterSpawn, uiManager);
+        wavesSystem.Initialize(gameData, characterSpawn);
+
+        WindowsService.Initialize();
 
         gameState.GameStarted += OnGameStarted;
         gameState.GameEnded += OnGameEnded;
@@ -75,25 +83,21 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (!GameState.IsGameActive)
+            return;
+
         if (timePreStart > 0)
         {
             timePreStart -= Time.deltaTime;
-            uiManager.ShowCenterMessage($"Start after {timePreStart:F1}");
         }
         else
         {
-            if (!gameState.IsGameActive)
-            {
-                uiManager.ShowCenterMessage($"Let's go", 1.5f);
-                StartGame();
-            }
 
             gameSessionTime += Time.deltaTime;
 
-            if (gameSessionTime >= gameData.SessionTimeSeconds)
+            if (gameSessionTime >= 775)
                 GameVictory();
 
-            uiManager.ShowScore(scoreSystem.Score);
         }
 
         if (!gameState.IsGameActive)
@@ -133,7 +137,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Victory");
         scoreSystem.EndGame();
-
+        GameManager.Instance.WindowsService.HideWindow<GameplayWindow>(true);
+        GameManager.Instance.WindowsService.ShowWindow<VictoryWindow>(false);
         //WindowsService.ShowWindow
     }
 
@@ -141,5 +146,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
         scoreSystem.EndGame();
+        GameState.PauseGame();
+        GameManager.Instance.WindowsService.HideWindow<GameplayWindow>(true);
+        GameManager.Instance.WindowsService.ShowWindow<DefeatWindow>(false);
     }
 }

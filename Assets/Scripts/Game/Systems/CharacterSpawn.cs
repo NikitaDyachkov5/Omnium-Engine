@@ -42,7 +42,6 @@ public class CharacterSpawn : MonoBehaviour
 
         OnPlayerSpawned?.Invoke(player);
 
-
     }
 
     public void SpawnEnemy()
@@ -69,7 +68,9 @@ public class CharacterSpawn : MonoBehaviour
     public void CharacterDeathHandler(Character deathCharacter)
     {
         if(deathCharacter.CharacterType == CharacterType.Player)
+        {
             gameOverCallback?.Invoke();
+        }
         else
         {
             scoreSystem.AddScore(deathCharacter.CharacterData.ScoreCost);

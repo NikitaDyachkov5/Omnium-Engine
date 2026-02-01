@@ -31,6 +31,9 @@ public class CharacterFactory : MonoBehaviour
 
         Character character = null;
 
+        if (type == CharacterType.Player)
+            Player = character;
+
         if (queue.Count > 0)
             character = queue.Dequeue();
         else

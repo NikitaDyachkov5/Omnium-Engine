@@ -22,11 +22,6 @@ public class GameplayWindow : Window
     [SerializeField]
     private TMP_Text coinsText;
 
-    public override void Initialize()
-    {
-        
-    }
-
     protected override void OpenStart()
     {
         base.OpenStart();
@@ -34,6 +29,7 @@ public class GameplayWindow : Window
 
         UpdateHealthVisual(player);
         player.LiveComponent.OnCharacterHealthChange += UpdateHealthVisual;
+
     }
 
     protected override void CloseStart()
@@ -56,4 +52,21 @@ public class GameplayWindow : Window
         healthSlider.maxValue = healthMax;
         healthSlider.value = health;
     }
+
+    private void UpdateScore(int scoreCount)
+    {
+        return;
+    }
+
+    private void Update()
+    {
+        float gameSeconds = GameManager.Instance.GameTimeSeconds;
+        int minutes = (int)gameSeconds / 60;
+        int seconds = (int)gameSeconds % 60;
+
+        string zero = "0";
+
+        timerText.text =  minutes + ":" + ((seconds < 10) ? zero : "") + seconds;
+    }
+
 }

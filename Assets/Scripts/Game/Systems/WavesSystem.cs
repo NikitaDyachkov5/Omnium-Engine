@@ -18,15 +18,13 @@ public class WavesSystem : MonoBehaviour
 
     private int breakTimeSeconds;
 
-    private UIManager uiManager;
 
     private WaveState waveState;
 
-    public void Initialize(GameData data, CharacterSpawn spawn, UIManager UIManager)
+    public void Initialize(GameData data, CharacterSpawn spawn)
     {
         gameData = data;
         characterSpawn = spawn;
-        uiManager = UIManager;
         timeBetweenEnemySpawn = data.TimeBetweenEnemySpawn;
         breakTimeSeconds = data.BreakTimeSeconds;
 
@@ -53,7 +51,6 @@ public class WavesSystem : MonoBehaviour
     private void OnFightStarted()
     {
         StartWave();
-        uiManager.ShowCenterMessage($"Wave {countWaves}/{gameData.MaxWaves}", 3f);
     }
 
     private void OnBreakStarted()
@@ -73,10 +70,6 @@ public class WavesSystem : MonoBehaviour
         if (waveState == null)
             Debug.LogError("WaveState NOT FOUND");
 
-        if (uiManager == null)
-            Debug.LogError("UI MANAGER NOT FOUND");
-
- 
     }
 
     private void Update()
@@ -98,12 +91,10 @@ public class WavesSystem : MonoBehaviour
                 return;
             }
             breakSeconds -= Time.deltaTime;
-            uiManager.ShowCenterMessage($"Break time {breakSeconds:F1}");
             if (breakSeconds <= 0)
             {
                 breakTimeSeconds = gameData.BreakTimeSeconds;
                 waveState.FightTime();
-                uiManager.HideCenterMessage();
             }
         }
 
