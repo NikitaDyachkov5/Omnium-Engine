@@ -20,7 +20,7 @@ public class OptionsWindow : Window
 
     public override void Initialize()
     {
-        
+        closeButton.onClick.AddListener(CloseOptionWindow);
     }
 
     private void MusicIsActive()
@@ -33,5 +33,11 @@ public class OptionsWindow : Window
 
     }
 
+
+    private void CloseOptionWindow()
+    {
+        Hide(true);
+        GameManager.Instance.WindowsService.ShowWindow<MainMenuWindow>(false);
+    }
 
 }

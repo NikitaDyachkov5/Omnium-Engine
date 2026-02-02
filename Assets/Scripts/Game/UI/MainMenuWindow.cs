@@ -7,11 +7,13 @@ public class MainMenuWindow : Window
 {
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button optionsGameButton;
+    [SerializeField] private Button skillsWindowButton;
 
     public override void Initialize()
     {
         startGameButton.onClick.AddListener(StartGameHandler);
         optionsGameButton.onClick.AddListener(OpenOptionsHandler);
+        skillsWindowButton.onClick.AddListener(OpenSkillsHandler);
     }
 
     protected override void OpenEnd()
@@ -19,6 +21,7 @@ public class MainMenuWindow : Window
         base.OpenEnd();
         startGameButton.interactable = true;
         optionsGameButton.interactable = true;
+        skillsWindowButton.interactable = true;
     }
 
     protected override void CloseStart()
@@ -26,6 +29,7 @@ public class MainMenuWindow : Window
         base.CloseStart();
         startGameButton.interactable = false;
         optionsGameButton.interactable = false;
+        skillsWindowButton.interactable = false;
     }
 
     private void StartGameHandler()
@@ -39,5 +43,11 @@ public class MainMenuWindow : Window
     {
         Hide(false);
         GameManager.Instance.WindowsService.ShowWindow<OptionsWindow>(false);
+    }
+
+    private void OpenSkillsHandler()
+    {
+        Hide(false);
+        GameManager.Instance.WindowsService.ShowWindow<SkillsWindow>(false);
     }
 }
